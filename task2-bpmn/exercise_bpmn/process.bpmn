@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_SteamPurchase" targetNamespace="http://example.com/steam-purchase">
+  <process id="Process_SteamPurchase" name="Обработать покупку цифровой игры в Steam" isExecutable="false">
+    <startEvent id="StartEvent" name="Пользователь начал покупку"/>
+    <userTask id="Task_SelectGame" name="Выбрать игру в магазине"/>
+    <userTask id="Task_AddCart" name="Добавить игру в корзину"/>
+    <userTask id="Task_ChoosePayment" name="Выбрать способ оплаты"/>
+    <userTask id="Task_Confirm" name="Подтвердить покупку"/>
+    <task id="Task_CreateOrder" name="Сформировать заказ"/>
+    <subProcess id="Sub_CheckOrder" name="Проверить данные заказа">
+      <startEvent id="Sub1_Start" name="Начало проверки"/>
+      <task id="Sub1_Account" name="Проверить аккаунт пользователя"/>
+      <task id="Sub1_Game" name="Проверить доступность игры"/>
+      <task id="Sub1_Region" name="Проверить региональные ограничения"/>
+      <endEvent id="Sub1_End" name="Заказ проверен"/>
+    </subProcess>
+    <subProcess id="Sub_Payment" name="Провести оплату">
+      <startEvent id="Sub2_Start" name="Начало оплаты"/>
+      <task id="Sub2_Data" name="Получить платежные данные"/>
+      <task id="Sub2_Check" name="Проверить реквизиты"/>
+      <intermediateCatchEvent id="Sub2_Wait" name="Ожидание ответа платежного сервиса"/>
+      <task id="Sub2_Result" name="Получить результат оплаты"/>
+      <endEvent id="Sub2_End" name="Оплата обработана"/>
+    </subProcess>
+    <exclusiveGateway id="Gateway_PaymentResult" name="Результат оплаты"/>
+    <task id="Task_ProcessConfirm" name="Обработать подтверждение оплаты"/>
+    <parallelGateway id="Gateway_ParallelSplit" name="Параллельные действия"/>
+    <serviceTask id="Task_AddLibrary" name="Добавить игру в библиотеку"/>
+    <serviceTask id="Task_SendNotice" name="Отправить уведомление о покупке"/>
+    <parallelGateway id="Gateway_ParallelJoin" name="Слияние"/>
+    <endEvent id="End_Success" name="Игра доступна пользователю"/>
+    <task id="Task_Error" name="Сообщить об ошибке оплаты"/>
+    <endEvent id="End_Error" name="Покупка не завершена"/>
+  </process>
+</definitions>
